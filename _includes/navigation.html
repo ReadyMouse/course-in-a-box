@@ -9,12 +9,44 @@
   <div class="navbar-collapse collapse" id="navbarSupportedContent">
     <ul class="navbar-nav">
       {% for module in site.data.course.modules %}
-       {% assign first_post = site.categories[module]|reverse|first %}
-       <li class="nav-item py-2{% if page.categories[1] == module %} active{% endif %}">
-         <a class="nav-link" href="{{ site.baseurl }}{{ first_post.url }}">
-           {{ module }}
-         </a>
-       </li>
+        {% if site.data.course[module] %}
+          <!-- Dropdown menu -->
+          {% assign dropdown_items = site.data.course[module] %}
+          {% assign dropdown_active = false %}
+          {% for dropdown_item in dropdown_items %}
+            {% if page.categories[1] == dropdown_item %}
+              {% assign dropdown_active = true %}
+              {% break %}
+            {% endif %}
+          {% endfor %}
+          <li class="nav-item dropdown py-2{% if dropdown_active %} active{% endif %}">
+            <a class="nav-link dropdown-toggle" href="#" id="{{ module }}Dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{ module }}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="{{ module }}Dropdown">
+              {% for dropdown_item in dropdown_items %}
+                {% assign first_post = site.categories[dropdown_item]|reverse|first %}
+                {% if first_post %}
+                  <a class="dropdown-item{% if page.categories[1] == dropdown_item %} active{% endif %}" href="{{ site.baseurl }}{{ first_post.url }}">
+                    {{ dropdown_item }}
+                  </a>
+                {% else %}
+                  <a class="dropdown-item" href="#">
+                    {{ dropdown_item }} <span class="text-muted">(No posts)</span>
+                  </a>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </li>
+        {% else %}
+          <!-- Regular menu item -->
+          {% assign first_post = site.categories[module]|reverse|first %}
+          <li class="nav-item py-2{% if page.categories[1] == module %} active{% endif %}">
+            <a class="nav-link" href="{{ site.baseurl }}{{ first_post.url }}">
+              {{ module }}
+            </a>
+          </li>
+        {% endif %}
       {% endfor %}
 <!--
       <li class="nav-item py-2">
