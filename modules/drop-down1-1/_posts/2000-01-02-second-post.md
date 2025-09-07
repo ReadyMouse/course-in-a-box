@@ -1,5 +1,5 @@
 ---
-title: Second Post in Drop-down 1-1
+title: Second Post
 published: true
 ---
 

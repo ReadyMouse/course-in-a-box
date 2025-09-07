@@ -5,10 +5,13 @@
 
 <!-- Build flat list of all modules (including dropdown items) -->
 {% for m in site.data.course.modules %}
-  {% if site.data.course[m] %}
+  {% if m == "dropdown" %}
     <!-- This is a dropdown module, add its children -->
-    {% for dropdown_item in site.data.course[m] %}
-      {% assign all_modules = all_modules | push: dropdown_item %}
+    {% for dropdown in site.data.course.dropdowns %}
+      {% assign dropdown_config = dropdown[1] %}
+      {% for dropdown_item in dropdown_config.items %}
+        {% assign all_modules = all_modules | push: dropdown_item %}
+      {% endfor %}
     {% endfor %}
   {% else %}
     <!-- This is a regular module -->

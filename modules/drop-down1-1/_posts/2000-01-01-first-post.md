@@ -1,5 +1,5 @@
 ---
-title: First Post in Drop-down 1-1
+title: First Post
 published: true
 ---
 
